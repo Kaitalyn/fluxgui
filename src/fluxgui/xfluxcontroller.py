@@ -37,6 +37,12 @@ class XfluxController(object):
     def preview_color(self, preview_color):
         self.state.preview(preview_color)
 
+    def toggle_on(self):
+        self.state.toggle_on()
+
+    def toggle_off(self):
+        self.state.toggle_off()
+
     def toggle_pause(self):
         self.state.toggle_pause()
 
@@ -216,6 +222,13 @@ class _AliveState(_XfluxState):
         self.controller_ref()._set_xflux_setting(**kwargs)
 
 class _RunningState(_AliveState):
+    def toggle_off(self):
+        self.controller_ref()._change_color_immediately(
+                self.controller_ref()._pause_color)
+    def toggle_on(self):
+        self.controller_ref()._change_color_immediately(
+                self.controller_ref()._current_color)
+
     def toggle_pause(self):
         self.controller_ref()._change_color_immediately(
                 self.controller_ref()._pause_color)
@@ -225,6 +238,13 @@ class _RunningState(_AliveState):
                 self.controller_ref()._current_color)
 
 class _PauseState(_AliveState):
+    def toggle_off(self):
+        self.controller_ref()._change_color_immediately(
+                self.controller_ref()._pause_color)
+    def toggle_on(self):
+        self.controller_ref()._change_color_immediately(
+                self.controller_ref()._current_color)
+
     def toggle_pause(self):
         self.controller_ref()._change_color_immediately(
                 self.controller_ref()._current_color)

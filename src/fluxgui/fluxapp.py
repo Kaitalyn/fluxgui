@@ -76,6 +76,8 @@ class Indicator(object):
     def create_menu(self):
         menu = gtk.Menu()
 
+        self.add_menu_item("On", self._toggle_on, menu)
+        self.add_menu_item("Off", self._toggle_off, menu)
         self.add_menu_item("Pause f.lux", self._toggle_pause,
                 menu, MenuItem=gtk.CheckMenuItem)
         self.add_menu_item("Preferences", self._open_preferences, menu)
@@ -98,6 +100,12 @@ class Indicator(object):
         menu.append(item)
         if show:
             item.show()
+
+    def _toggle_on(self, item):
+        self.xflux_controller.toggle_on()
+
+    def _toggle_off(self, item):
+        self.xflux_controller.toggle_off()
 
     def _toggle_pause(self, item):
         self.xflux_controller.toggle_pause()
